@@ -1,12 +1,12 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { fetchUsers, User } from "../services/api";
+import { fetchUsers } from "../services/api";
+import { User } from "../models/user";
 
 interface UserContextType {
   users: User[];
   loading: boolean;
   erro: string | null;
   carregarUsuarios: () => Promise<void>;
-  login: (email: string, senha: string) => boolean;
   usuarioLogado: User | null;
 }
 
@@ -15,7 +15,6 @@ export const UserContext = createContext<UserContextType>({
   loading: false,
   erro: null,
   carregarUsuarios: async () => {},
-  login: () => false,
   usuarioLogado: null,
 });
 
@@ -45,21 +44,6 @@ export function UserProvider({ children }: UserProviderProps) {
     carregarUsuarios();
   }, []);
 
-  // 🔥 Função de login simples
-  function login(email: string, senha: string): boolean {
-    const found = users.find(
-      (u) => u.email === email && u.senha === senha
-    );
-
-    if (found) {
-      setUsuarioLogado(found);
-      console.log("Usuário logado:", found);
-      return true;
-    }
-
-    return false;
-  }
-
   return (
     <UserContext.Provider
       value={{
@@ -67,7 +51,6 @@ export function UserProvider({ children }: UserProviderProps) {
         loading,
         erro,
         carregarUsuarios,
-        login,
         usuarioLogado,
       }}
     >
