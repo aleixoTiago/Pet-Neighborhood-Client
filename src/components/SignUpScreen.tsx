@@ -3,13 +3,16 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { ArrowLeft, Upload, Camera } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 interface SignUpScreenProps {
   onNavigate: (screen: string) => void;
 }
 
-export function SignUpScreen({ onNavigate }: SignUpScreenProps) {
+export function SignUpScreen() {
   const [petPhoto, setPetPhoto] = useState<string | null>(null);
+  const onNavigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background">

@@ -3,12 +3,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { BottomNav } from "./BottomNav";
 import { Edit, Users, LogOut, MapPin, Calendar } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { useNavigate } from "react-router-dom";
 
-interface ProfileScreenProps {
-  onNavigate: (screen: string) => void;
-}
-
-export function ProfileScreen({ onNavigate }: ProfileScreenProps) {
+export function ProfileScreen() {
+  const onNavigate = useNavigate();
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}

@@ -2,12 +2,14 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Search, Plus } from "lucide-react";
 import { GroupCard } from "./GroupCard";
+import { useNavigate } from "react-router-dom";
 
 interface GroupsDiscoveryScreenProps {
   onNavigate: (screen: string) => void;
 }
 
-export function GroupsDiscoveryScreen({ onNavigate }: GroupsDiscoveryScreenProps) {
+export function GroupsDiscoveryScreen() {
+  const onNavigate = useNavigate();
   const groups = [
     {
       id: 1,

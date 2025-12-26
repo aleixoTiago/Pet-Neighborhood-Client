@@ -2,12 +2,10 @@ import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { BottomNav } from "./BottomNav";
 import { UserPlus, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-interface CloseFriendsScreenProps {
-  onNavigate: (screen: string) => void;
-}
-
-export function CloseFriendsScreen({ onNavigate }: CloseFriendsScreenProps) {
+export function CloseFriendsScreen() {
+  const onNavigate = useNavigate();
   const friends = [
     {
       id: 1,

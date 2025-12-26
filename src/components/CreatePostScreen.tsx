@@ -2,12 +2,11 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { ArrowLeft, Image as ImageIcon, HelpCircle, Baby, Lightbulb, Footprints, Heart } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface CreatePostScreenProps {
-  onNavigate: (screen: string) => void;
-}
 
-export function CreatePostScreen({ onNavigate }: CreatePostScreenProps) {
+export function CreatePostScreen() {
+  const onNavigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [shareWith, setShareWith] = useState<"group" | "friends">("group");
 

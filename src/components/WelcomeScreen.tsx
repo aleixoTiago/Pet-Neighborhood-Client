@@ -4,24 +4,25 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useState, useContext } from "react";
 import { useAuth } from "../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
-interface WelcomeScreenProps { 
-  onNavigate: (screen: string) => void; 
-}
+// interface WelcomeScreenProps { 
+//   onNavigate: (screen: string) => void; 
+// }
 
-
-export function WelcomeScreen({ onNavigate }: WelcomeScreenProps) {
+// { onNavigate }: WelcomeScreenProps
+export function WelcomeScreen() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
+  const onNavigate = useNavigate();
 
   const { login, loading, error } = useAuth();
 
   async function handleLogin() {
     try {
       await login(email, senha);
-      console.log("logou")
-      onNavigate("/dashboard");
+      onNavigate("timeline");
     } catch {
       // erro já tratado no context
     }

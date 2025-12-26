@@ -7,7 +7,7 @@ interface UserContextType {
   loading: boolean;
   erro: string | null;
   carregarUsuarios: () => Promise<void>;
-  usuarioLogado: User | null;
+  // usuarioLogado: User | null;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -15,7 +15,7 @@ export const UserContext = createContext<UserContextType>({
   loading: false,
   erro: null,
   carregarUsuarios: async () => {},
-  usuarioLogado: null,
+  // usuarioLogado: null,
 });
 
 interface UserProviderProps {
@@ -26,7 +26,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [erro, setErro] = useState<string | null>(null);
-  const [usuarioLogado, setUsuarioLogado] = useState<User | null>(null);
+  // const [usuarioLogado, setUsuarioLogado] = useState<User | null>(null);
 
   async function carregarUsuarios() {
     try {
@@ -51,7 +51,7 @@ export function UserProvider({ children }: UserProviderProps) {
         loading,
         erro,
         carregarUsuarios,
-        usuarioLogado,
+        // usuarioLogado,
       }}
     >
       {children}

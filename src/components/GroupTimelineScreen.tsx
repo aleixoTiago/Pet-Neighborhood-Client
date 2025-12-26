@@ -2,12 +2,13 @@ import { Plus } from "lucide-react";
 import { PostCard } from "./PostCard";
 import { BottomNav } from "./BottomNav";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { useNavigate } from "react-router-dom";
 
-interface GroupTimelineScreenProps {
-  onNavigate: (screen: string) => void;
-}
 
-export function GroupTimelineScreen({ onNavigate }: GroupTimelineScreenProps) {
+
+export function GroupTimelineScreen() {
+  const onNavigate = useNavigate();
+
   const posts = [
     {
       id: 1,

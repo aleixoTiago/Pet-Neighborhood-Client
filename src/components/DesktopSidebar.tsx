@@ -2,7 +2,7 @@ import { Home, Users, UserRound, User, PawPrint, LogOut, Plus } from "lucide-rea
 import { Button } from "./ui/button";
 
 interface DesktopSidebarProps {
-  active: "timeline" | "groups" | "friends" | "profile";
+  active: "timeline" | "groups" | "friends" | "pets" | "profile";
   onNavigate: (screen: string) => void;
 }
 
@@ -11,6 +11,7 @@ export function DesktopSidebar({ active, onNavigate }: DesktopSidebarProps) {
     { id: "timeline", icon: Home, label: "Início" },
     { id: "groups", icon: Users, label: "Grupos" },
     { id: "friends", icon: UserRound, label: "Amigos Próximos" },
+    { id: "pets", icon: PawPrint, label: "Pets" },
     { id: "profile", icon: User, label: "Perfil" },
   ];
 

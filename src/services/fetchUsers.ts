@@ -18,18 +18,3 @@ export async function fetchUsers(): Promise<FetchUsersResponse> {
   const data = await response.json();
   return data as FetchUsersResponse;
 }
-
-export interface loggedInUser {
-  users: User;
-}
-
-export async function makeLogin(): Promise<loggedInUser> {
-  const response = await fetch("http://localhost:4000/login/");
-
-  if (!response.ok) {
-    throw new Error("Erro ao fazer login");
-  }
-
-  const data = await response.json();
-  return data as loggedInUser;
-}
