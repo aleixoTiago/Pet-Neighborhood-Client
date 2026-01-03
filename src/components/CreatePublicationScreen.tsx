@@ -1,11 +1,23 @@
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { ArrowLeft, Image as ImageIcon, HelpCircle, Baby, Lightbulb, Footprints, Heart } from "lucide-react";
+import {
+  ArrowLeft,
+  Image as ImageIcon,
+  HelpCircle,
+  Baby,
+  Lightbulb,
+  Footprints,
+  Heart,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Publication } from "../models/publication";
+import { useAuth } from "../contexts/AuthProvider";
+import { usePublications } from "../contexts/PublicationProvider";
 
-
-export function CreatePostScreen() {
+export function CreatePublicationScreen() {
+  const { user } = useAuth();
+  const { createPublication } = usePublications();
   const onNavigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [shareWith, setShareWith] = useState<"group" | "friends">("group");
@@ -17,6 +29,47 @@ export function CreatePostScreen() {
     { id: "walk", icon: Footprints, label: "Passeio", color: "#B8A6E3" },
     { id: "matchmaking", icon: Heart, label: "Cruzamento", color: "#FFB6C1" },
   ];
+
+  async function handleSubmit() {
+    if (!user) {
+      console.error("Usuário não autenticado");
+      return;
+    }
+
+    const payload = {
+      ...publication,
+      author: user.nome,
+    };
+    try {
+      await createPublication(payload);
+      onNavigate("/timeline");
+    } catch (error) {
+      console.error("Erro ao criar publicação", error);
+    }
+  }
+
+  const [publication, setPublication] = useState<Publication>({
+    id: 0,
+    author: "",
+    authorAvatar: null,
+    category: null,
+    content: "",
+    image: null,
+    petImage: null,
+    likes: null,
+    comments: null,
+    created_at: "",
+  });
+
+  function updateField<K extends keyof Publication>(
+    field: K,
+    value: Publication[K]
+  ) {
+    setPublication((prev: Publication) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,6 +123,8 @@ export function CreatePostScreen() {
           <label className="block">O que você quer compartilhar?</label>
           <Textarea
             placeholder="Escreva aqui..."
+            value={publication.content}
+            onChange={(e) => updateField("content", e.target.value)}
             className="min-h-32 rounded-2xl bg-input-background border-0 resize-none"
           />
         </div>
@@ -111,7 +166,7 @@ export function CreatePostScreen() {
 
         {/* Submit Button */}
         <Button
-          onClick={() => onNavigate("timeline")}
+          onClick={handleSubmit}
           className="w-full h-14 bg-[#FF9B9B] hover:bg-[#FF9B9B]/90 text-white rounded-2xl shadow-md mt-8"
         >
           Publicar

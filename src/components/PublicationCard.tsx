@@ -2,40 +2,27 @@ import { Heart, MessageCircle, MoreHorizontal } from "lucide-react";
 import { CategoryIcon } from "./CategoryIcon";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Publication } from "../models/publication";
 
-interface PostCardProps {
-  author: string;
-  authorAvatar: string;
-  category: "question" | "pet-sitting" | "product" | "walk" | "matchmaking";
-  content: string;
-  petImage?: string;
-  likes: number;
-  comments: number;
-  timeAgo: string;
+interface PublicationCardProps {
+  publication: Publication;
 }
 
-export function PostCard({
-  author,
-  authorAvatar,
-  category,
-  content,
-  petImage,
-  likes,
-  comments,
-  timeAgo,
-}: PostCardProps) {
+export function PublicationCard({ publication }: PublicationCardProps) {
   return (
     <div className="bg-card rounded-2xl p-5 shadow-sm border border-border">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <Avatar className="w-12 h-12">
-            <AvatarImage src={authorAvatar} />
-            <AvatarFallback>{author[0]}</AvatarFallback>
+            <AvatarImage src={publication.authorAvatar} />
+            <AvatarFallback>{publication.author[0]}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-medium">{author}</p>
-            <p className="text-sm text-muted-foreground">{timeAgo}</p>
+            <p className="font-medium">{publication.author}</p>
+            <p className="text-sm text-muted-foreground">
+              {publication.created_at}
+            </p>
           </div>
         </div>
         <button className="p-2 hover:bg-muted rounded-full">
@@ -44,17 +31,17 @@ export function PostCard({
       </div>
 
       {/* Category */}
-      <div className="mb-3">
-        <CategoryIcon category={category} />
-      </div>
+      {/* <div className="mb-3">
+        <CategoryIcon category={publication.category} />
+      </div> */}
 
       {/* Content */}
-      <p className="mb-4 leading-relaxed">{content}</p>
+      <p className="mb-4 leading-relaxed">{publication.content}</p>
 
       {/* Pet Image */}
-      {petImage && (
+      {publication.image && (
         <ImageWithFallback
-          src={petImage}
+          src={publication.image}
           alt="Pet"
           className="w-full h-64 object-cover rounded-xl mb-4"
         />
@@ -64,11 +51,11 @@ export function PostCard({
       <div className="flex items-center gap-6 pt-3 border-t border-border">
         <button className="flex items-center gap-2 text-muted-foreground hover:text-[#FF9B9B] transition-colors">
           <Heart className="w-5 h-5" />
-          <span className="text-sm">{likes}</span>
+          {/* <span className="text-sm">{likes}</span> */}
         </button>
         <button className="flex items-center gap-2 text-muted-foreground hover:text-[#A8E6E3] transition-colors">
           <MessageCircle className="w-5 h-5" />
-          <span className="text-sm">{comments}</span>
+          <span className="text-sm">{publication.comments}</span>
         </button>
       </div>
     </div>

@@ -1,10 +1,16 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
-import { fetchPets } from "../services/fetchPets";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
+import { fetchPets } from "../services/pets";
 import { User } from "../models/user";
 import { Pet } from "../models/pet";
 
 interface PetContextType {
-  pets: Pet [];
+  pets: Pet[];
   loading: boolean;
   error: string | null;
   carregarPets: () => Promise<void>;
@@ -14,13 +20,12 @@ const PetContext = createContext<PetContextType>({
   pets: [],
   loading: false,
   error: null,
-  carregarPets: async () => {}
+  carregarPets: async () => {},
 });
 
 interface PetProviderProps {
   children: ReactNode;
 }
-
 
 export function PetProvider({ children }: PetProviderProps) {
   const [pets, setPets] = useState<Pet[]>([]);
@@ -31,7 +36,6 @@ export function PetProvider({ children }: PetProviderProps) {
     try {
       setLoading(true);
       const data = await fetchPets();
-      console.log(data)
       setPets(data.pets);
     } catch (err: any) {
       setError(err.message);
@@ -58,6 +62,6 @@ export function PetProvider({ children }: PetProviderProps) {
   );
 }
 
- export function usePets() {
-    return useContext(PetContext);
-  }
+export function usePets() {
+  return useContext(PetContext);
+}
