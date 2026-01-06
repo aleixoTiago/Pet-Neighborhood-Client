@@ -3,14 +3,31 @@ import { PublicationCard } from "./PublicationCard";
 import { BottomNav } from "./BottomNav";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { useNavigate } from "react-router-dom";
-// import { posts } from "../mocks/publicationMockup";
+import { useEffect, useRef } from "react";
 import { usePublications } from "../contexts/PublicationProvider";
 
 export function GroupTimelineScreen() {
   const onNavigate = useNavigate();
-  const { publications, loading, error } = usePublications();
+  const { publications, loading, error, loadPublications } = usePublications();
 
-  //  const [posts, setPosts] = useState<Post[]>([]);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadPublications();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadPublications]);
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -44,6 +61,12 @@ export function GroupTimelineScreen() {
         {publications.map((publication) => (
           <PublicationCard key={publication.id} publication={publication} />
         ))}
+
+        {/* Sentinela do infinite scroll */}
+        <div ref={observerRef} />
+
+        {loading && <p className="text-center">Carregando...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
       </div>
 
       {/* Floating Action Button */}

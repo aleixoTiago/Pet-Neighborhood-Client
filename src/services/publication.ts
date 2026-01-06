@@ -29,16 +29,19 @@ function getAuthHeaders() {
   };
 }
 
-export async function fetchPublication(): Promise<PublicationListResponse> {
-  const response = await fetch(`${API_URL}/`, {
+export async function fetchPublication(
+  limit = 5,
+  offset = 0
+): Promise<PublicationListResponse> {
+  const response = await fetch(`${API_URL}?limit=${limit}&offset=${offset}`, {
     headers: getAuthHeaders(),
   });
 
   if (!response.ok) {
     throw new Error("Erro ao buscar publicação");
   }
-  const data = await response.json();
-  return data as PublicationListResponse;
+
+  return response.json();
 }
 
 export async function createPublication(

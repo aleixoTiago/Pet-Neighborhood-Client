@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useRef,
 } from "react";
 import { Publication } from "../models/publication";
 import { fetchPublication, createPublication } from "../services/publication";
@@ -41,16 +42,38 @@ export function PublicationProvider({ children }: PublicationProviderProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function loadPublications() {
-    try {
-      setLoading(true);
-      setError(null);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const loadingRef = useRef(false);
 
-      const response = await fetchPublication();
-      setPublications(response.publications);
-    } catch (err) {
+  const LIMIT = 5;
+
+  async function loadPublications() {
+    if (loadingRef.current || !hasMore) return;
+
+    loadingRef.current = true;
+    setLoading(true);
+
+    try {
+      const response = await fetchPublication(LIMIT, offset);
+
+      setPublications((prev) => {
+        const existingIds = new Set(prev.map((p) => p.id));
+        const newOnes = response.publications.filter(
+          (p) => !existingIds.has(p.id)
+        );
+        return [...prev, ...newOnes];
+      });
+
+      setOffset((prev) => prev + LIMIT);
+
+      if (response.publications.length < LIMIT) {
+        setHasMore(false);
+      }
+    } catch {
       setError("Erro ao carregar publicações");
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
   }
@@ -61,9 +84,6 @@ export function PublicationProvider({ children }: PublicationProviderProps) {
       setError(null);
 
       await createPublication(payload);
-
-      // adiciona a nova publicação na lista
-      // setPublications((prev) => [response.publication, ...prev]);
     } catch (err) {
       setError("Erro ao criar publicação");
     } finally {
